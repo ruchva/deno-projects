@@ -1,0 +1,65 @@
+/**
+ * ! Singleton:
+ * Es un patrón de diseño creacional que garantiza que una clase
+ * tenga una única instancia y proporciona un punto de acceso global a ella.
+ *
+ * * Es útil cuando necesitas controlar el acceso a una única instancia
+ * * de una clase, como por ejemplo, en un objeto de base de datos o en un
+ * * objeto de configuración.
+ */
+
+import { COLORS } from '../helpers/colors.ts';
+
+class DatabaseConnection {
+  private static instance: DatabaseConnection;
+  private connected: boolean = false;
+
+  // Constructor privado para evitar instancias directas
+  private constructor() {}
+
+  // Método estático para obtener la instancia única
+  public static getInstance(): DatabaseConnection {
+    // Completar: implementar el patrón Singleton
+    //throw new Error('Method not implemented.');
+    return this.instance || (this.instance = new DatabaseConnection());
+  }
+
+  // Método para conectar a la base de datos
+  public connect(): void {
+    if(this.connected) {
+        console.log('%cYa hay una conexión activa a la base de datos...', COLORS.yellow);
+        return;
+    }
+    // Completar: si no está conectado, mostrar mensaje de conexión
+    console.log('%cConectando a la base de datos...', COLORS.green);
+    this.connected = true;
+  }
+
+  // Método para desconectar de la base de datos
+  public disconnect(): void {
+    if(!this.connected) {
+        console.log('%cNo hay conexión activa a la base de datos...', COLORS.yellow);
+        return;
+    }
+    // Completar: desconectar y mostrar mensaje de desconexión
+    console.log('%cDesconectando de la base de datos...', COLORS.red);
+    this.connected = false;
+  }
+}
+
+// Pruebas
+function main() {
+  const db1 = DatabaseConnection.getInstance();
+  db1.connect(); // Debería conectar a la base de datos
+
+  const db2 = DatabaseConnection.getInstance();
+  db2.connect(); // Debería mostrar que ya existe una conexión activa
+
+  console.log('Son iguales:', db1 === db2); // Debería mostrar true
+
+  db1.disconnect(); // Debería cerrar la conexión
+
+  db2.connect(); // Ahora debería conectar de nuevo, ya que se cerró la anterior
+}
+
+main();
